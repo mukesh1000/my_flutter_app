@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class DatabaseService {
   final String? uid;
@@ -9,6 +12,12 @@ class DatabaseService {
 final CollectionReference userCollection = // it is done to create a user collection
 FirebaseFirestore.instance.collection("users");
 final CollectionReference groupCollection = FirebaseFirestore.instance.collection("groups");
+final CollectionReference postsRef = FirebaseFirestore.instance.collection("posts");
+
+// final StorageReference storageRef = FirebaseStorage.instance.ref(); 
+final Reference storageRef = FirebaseStorage.instance.ref();
+final user = FirebaseAuth.instance.currentUser!;
+
 
 
 // updating the userdata

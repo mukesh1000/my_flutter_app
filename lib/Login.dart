@@ -64,8 +64,14 @@ class _MyLoginState extends State<MyLogin> {
                               fillColor: Colors.grey.shade100,
                               filled: true,
                               hintText: 'Email',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10))),
+                              enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
                         ),
                         SizedBox(
                           height: 20,
@@ -77,8 +83,14 @@ class _MyLoginState extends State<MyLogin> {
                               fillColor: Colors.grey.shade100,
                               filled: true,
                               hintText: 'Password',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10))),
+                              enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
                         ),
                         SizedBox(
                           height: 5,
@@ -90,12 +102,12 @@ class _MyLoginState extends State<MyLogin> {
                                 child: Align(
                                   alignment: Alignment.bottomRight,
                                   child: Text(
-                                    'Forget Password',
+                                    'Forget Password?',
                                     style: TextStyle(
                                       //decoration: TextDecoration.underline,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(116, 192, 67, 1),
+                                      color: Color.fromRGBO(116, 192, 67, 1)
                                     ),
                                   ),
                                 )),

@@ -3,7 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_flutter_app/Homepage.dart';
+import 'package:my_flutter_app/navigationbar/navbar.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -49,7 +51,7 @@ class _MyRegisterState extends State<MyRegister> {
       if (user != null) {
         //call our database service to update the user data
         await DatabaseService(uid: user.uid).updateUserData(_nameController.text, _emailController.text,
-         _addressController.text, _departmentController.text, _displayname.text, _photoUrl.text, _bio.text );
+         _addressController.text, _departmentController.text, _displayname.text, _photoUrl.text, _bio.text ).then((value) => Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Navbar())));
         return true;
       }
     } on FirebaseAuthException catch (e) {
@@ -70,17 +72,17 @@ class _MyRegisterState extends State<MyRegister> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Registration"),
-          backgroundColor: Colors.lightGreen,
+          backgroundColor: Color.fromRGBO(116, 192, 67, 1),
           elevation: 0,
         ),
-          backgroundColor: Color.fromRGBO(116, 192, 67, 1),
+          backgroundColor: Colors.white,
           body: Stack(
             children: [
               Container(
                 padding: EdgeInsets.only(left:35, top:20),
                 child: Text(
                   'Create\nAccount',
-                  style: TextStyle(color: Colors.white, fontSize: 21,fontWeight: FontWeight.w700),
+                  style: TextStyle(color: Colors.black, fontSize: 21,fontWeight: FontWeight.w700),
                 ),
               ),
               SizedBox(
@@ -99,8 +101,14 @@ class _MyRegisterState extends State<MyRegister> {
                             fillColor: Colors.grey.shade100,
                             filled: true,
                             hintText: 'Name',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
                       ),
                       SizedBox(
                         height: 30,
@@ -111,8 +119,15 @@ class _MyRegisterState extends State<MyRegister> {
                             fillColor: Colors.grey.shade100,
                             filled: true,
                             hintText: 'Address',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
+                            
                       ),
                       SizedBox(
                         height: 30,
@@ -123,8 +138,14 @@ class _MyRegisterState extends State<MyRegister> {
                             fillColor: Colors.grey.shade100,
                             filled: true,
                             hintText: 'Department',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
                       ),
                       SizedBox(
                         height: 30,
@@ -146,8 +167,14 @@ class _MyRegisterState extends State<MyRegister> {
                             fillColor: Colors.grey.shade100,
                             filled: true,
                             hintText: 'Email',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
 
                       ),
                       SizedBox(
@@ -160,8 +187,15 @@ class _MyRegisterState extends State<MyRegister> {
                             fillColor: Colors.grey.shade100,
                             filled: true,
                             hintText: 'Password',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10)),
+
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color.fromRGBO(116, 192, 67, 1)),
+                            borderRadius: BorderRadius.circular(10))
+                              ),
+                            
                       ),
                       SizedBox(
                         height: 40,
@@ -172,14 +206,14 @@ class _MyRegisterState extends State<MyRegister> {
                           Text(
                             'Sign Up',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                                 fontSize: 27, fontWeight: FontWeight.w700),
                           ),
                           CircleAvatar(
                             radius: 20,
-                            backgroundColor: Color.fromARGB(255, 17, 17, 17),
+                            backgroundColor: Color.fromRGBO(116, 192, 67, 1),
                             child: IconButton(
-                              color: Colors.green,
+                              color: Colors.black,
                               onPressed: () {
                                 registerUserwithEmailandPassword (_nameController.text, _emailController.text, _addressController.text, _departmentController.text);
                                 // try {

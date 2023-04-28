@@ -1,17 +1,32 @@
 import 'dart:io';
 //import 'dart:js';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+//import 'package:flutter/src/widgets/framework.dart';
+//import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as Im;
+import 'package:uuid/uuid.dart';
 import '../models/database_Service.dart';
+
+final Reference storageRef = FirebaseStorage.instance.ref();
+final CollectionReference postsRef = FirebaseFirestore.instance.collection("posts");
+final user = FirebaseAuth.instance.currentUser!;
+
+
+
+
 
 class upload extends StatefulWidget {
   //const upload({super.key});
   //final DatabaseService _selectedIndex;
+  late User currentUser;
+
+  
 
 
   @override
@@ -19,9 +34,13 @@ class upload extends StatefulWidget {
 }
 
 class _uploadState extends State<upload> {
-   File? image;
-   bool isUploading = false;
-
+  TextEditingController titleController = TextEditingController();
+  TextEditingController detailsController = TextEditingController();
+  File? image;
+  bool isUploading = false;
+  String postId = Uuid().v4();
+   
+  
   handleTakePhoto() async {
     Navigator.pop(context);
       var photo = await ImagePicker().pickImage(
@@ -36,7 +55,7 @@ class _uploadState extends State<upload> {
   handleChooseFromGallery() async{
     Navigator.pop(context);
      var photo = await ImagePicker().pickImage(
-      source: ImageSource.camera,);
+      source: ImageSource.gallery,);
 
      setState(() {
       image = File(photo!.path);
@@ -72,6 +91,7 @@ class _uploadState extends State<upload> {
         });
 
   }
+
   Container buildSplashScreen() {
     return Container(
       color: Colors.white,
@@ -119,17 +139,73 @@ class _uploadState extends State<upload> {
     });
   }
 
-  compressImage() async{
+  // compressImage() async{
+  //   final tempDir = await getTemporaryDirectory();
+  //   final path = tempDir.path;
+  //   Im.Image? imageFile = Im.decodeImage(image!.readAsBytesSync());
+  //   final compressedImageFile= File('$path/img_$postID.jpg').writeAsBytesSync(Im.encodeJpg
+  //   (imageFile!, quality: 85)); 
+  //   setState(() {
+  //    image = 
+  //   });
+  // }
+
+    compressImage() async {
     final tempDir = await getTemporaryDirectory();
     final path = tempDir.path;
     Im.Image? imageFile = Im.decodeImage(image!.readAsBytesSync());
-
-    
+    final compressedImageFile = File('$path/img_$postId.jpg')
+      ..writeAsBytesSync(Im.encodeJpg(imageFile!, quality: 85));
+    setState(() {
+      image = compressedImageFile;
+    });
   }
 
-  handleSubmit(){
+ Future <String> uploadImage(imageFile) async {
+
+  UploadTask uploadTask = 
+  storageRef.child("post_$postId.jpg").putFile(imageFile); //database.dart file import garnu parxa aani error hatxa so import gar
+  TaskSnapshot storageSnap = await uploadTask;
+  String downloadUrl = await storageSnap.ref.getDownloadURL();
+  return downloadUrl;
+
+  }
+
+  createPostInFirestore({ required String mediaUrl, String? title, String? details}) {
+
+     postsRef
+        .doc(widget.currentUser.uid)
+        .collection('userPosts')
+        .doc(postId)
+        .set({
+          "postId": postId,
+          "mediaUrl": mediaUrl,
+          "title": title,
+          "details": details,
+          "likes": {},
+          });
+    
+
+  }
+
+  handleSubmit() async {
     setState(() {
       isUploading = true;
+    });
+    await compressImage();
+    String mediaUrl = await uploadImage(image);
+    createPostInFirestore(
+      mediaUrl: mediaUrl,
+      title: titleController.text,
+      details: detailsController.text,
+    );
+
+    titleController.clear();
+    detailsController.clear();
+    setState(() {
+      image = null;
+      isUploading = false;
+      //postId = Uuid().v4();
     });
 
   }
@@ -194,7 +270,8 @@ class _uploadState extends State<upload> {
             title: Container(
               width: 250.0,
               child: TextField(
-              decoration: InputDecoration(
+                controller: titleController,
+                decoration: InputDecoration(
                 hintText:" Write about a Title ",
                 border: InputBorder.none, 
                 ),
@@ -208,9 +285,10 @@ class _uploadState extends State<upload> {
             title: Container(
               width: 250.0,
               child: TextField(
+                controller: detailsController,
                 decoration: InputDecoration(
-                  hintText: "Details about the Post",
-                  border: InputBorder.none,
+                hintText: "Details about the Post",
+                border: InputBorder.none,
                 ),
                 ),
             ),

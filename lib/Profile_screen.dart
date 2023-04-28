@@ -1,18 +1,47 @@
-//import 'dart:js_util';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:my_flutter_app/EditProfileScreen.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
 
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool isDark=true;
+
+  final user = FirebaseAuth.instance.currentUser!;
+
+  String _uid = "";
+  String _name = "";
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
+
+  void getdata() async {
+    _uid = user.uid;
+
+    final DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+     setState(() {
+       _name = userDoc.get('Name');
+     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(116, 192, 67, 1),
         leading: IconButton(
@@ -58,10 +87,10 @@ class ProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 10),
               Text(
-                'User',
+                _name,
                 style: TextStyle(color: Colors.black),
               ),
-              Text('user@gmail.com', style: TextStyle(color: Colors.black)),
+              Text(user.email ?? '', style: TextStyle(color: Colors.black)),
               const SizedBox(height: 20),
               SizedBox(
                 width: 200,
@@ -128,6 +157,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
+
     );
   }
 }
