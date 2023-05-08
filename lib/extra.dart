@@ -1,29 +1,21 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:my_flutter_app/Admin/upload.dart';
 
-//final timelineRef = FirebaseFirestore.instance.collection('timeline');
+class UserProfilePage extends StatefulWidget {
+  final String userId;
 
-class MyPost extends StatefulWidget {
-  //final String userId;
-
-   //const MyPost({Key? key, required this.userId}) : super(key: key);
+  const UserProfilePage({Key? key, required this.userId}) : super(key: key);
 
   @override
-  State<MyPost> createState() => _MyPostState();
-  
+  State<UserProfilePage> createState() => _UserProfilePageState();
 }
 
-class _MyPostState extends State<MyPost> {
-  // final String currentUserId = currentUser?.id;
+class _UserProfilePageState extends State<UserProfilePage> {
   late Stream<List<Post>> _postsStream;
-  // bool isLoading = false;
-  // int postCount = 0;
-  // List<upload> posts = [];
 
-   @override
+  @override
   void initState() {
     super.initState();
     _postsStream = FirebaseFirestore.instance
@@ -117,5 +109,5 @@ class Post {
 
   });
 }
-  
-  
+
+

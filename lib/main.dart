@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget{
   const MyApp({super.key});
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
+    return MaterialApp( 
     debugShowCheckedModeBanner: false,
     initialRoute: 'Login',
     routes: {
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget{
       'ProfileScreen':(context) => ProfileScreen(),
       'EditProfileScreen':(context) => EditProfileScreen(),
       'ChangePassword':(context) => ChangePassword(),
-      'Admin':(context) => MyAdmin(),
+      'Admin':(context) => MyAdmin(), 
       'Search':(context) => MySearch(),
       'Post':(context) => MyPost(),
       'Navbar':(context) => Navbar(),

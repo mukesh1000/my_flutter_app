@@ -12,7 +12,7 @@ class DatabaseService {
 final CollectionReference userCollection = // it is done to create a user collection
 FirebaseFirestore.instance.collection("users");
 final CollectionReference groupCollection = FirebaseFirestore.instance.collection("groups");
-final CollectionReference postsRef = FirebaseFirestore.instance.collection("posts");
+// final CollectionReference postsRef = FirebaseFirestore.instance.collection("posts");
 
 // final StorageReference storageRef = FirebaseStorage.instance.ref(); 
 final Reference storageRef = FirebaseStorage.instance.ref();
@@ -38,3 +38,4 @@ Future updateUserData(String Name, String Address, String Department, String Ema
 }
 
 }
+

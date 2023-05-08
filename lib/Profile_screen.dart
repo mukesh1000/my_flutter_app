@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:my_flutter_app/EditProfileScreen.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:my_flutter_app/extra.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,41 +15,30 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool isDark=true;
+  bool isDark = true;
 
   final user = FirebaseAuth.instance.currentUser!;
 
   String _uid = "";
   String _name = "";
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getdata();
-  }
-
-  void getdata() async {
-    _uid = user.uid;
-
-    final DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(_uid).get();
-     setState(() {
-       _name = userDoc.get('Name');
-     });
+    // getdata();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(116, 192, 67, 1),
         leading: IconButton(
             // onPressed: () => Navigator.of(context).pop(),
-              onPressed: () {
-                Navigator.pushNamed(context, 'Navbar');
-              },
-              
+            onPressed: () {
+              Navigator.pushNamed(context, 'Navbar');
+            },
             icon: const Icon(
               LineAwesomeIcons.angle_left,
               color: Colors.black,
@@ -79,9 +68,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 35,
                   height: 35,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Color.fromRGBO(116, 192, 67, 1), //.withOpacity(0.1),
-                      ),
+                    borderRadius: BorderRadius.circular(100),
+                    color: Color.fromRGBO(116, 192, 67, 1), //.withOpacity(0.1),
+                  ),
                   child: Icon(LineAwesomeIcons.alternate_pencil,
                       size: 18.0, color: Colors.black)),
 
@@ -111,11 +100,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 10),
 
               //menu
-
+              
               ProfileMenuWidget(
                   title: "Settings",
                   icon: LineAwesomeIcons.cog,
-                  onPress: () {}),
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            UserProfilePage(userId: user.uid),
+                      ),
+                    );
+                  }),
               ProfileMenuWidget(
                   title: "History",
                   icon: LineAwesomeIcons.history,
@@ -157,7 +153,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -16,9 +17,12 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
+  
+
+  final User? currentUser= FirebaseAuth.instance.currentUser;
 
   int _selectedIndex = 0;
-   List<Widget> _widgetoptions = <Widget>[
+   final List<Widget> _widgetoptions = <Widget>[
     MyHomepage(),
     MyPost(),
     MySearch(),
